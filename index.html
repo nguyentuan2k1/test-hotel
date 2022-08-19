@@ -638,10 +638,10 @@
             document.querySelector('.cover-data-date').querySelector('.hotel-heading').innerHTML = "Ngày "+date;
             let room_permission = document.querySelector('.room-permission');
             room_permission.querySelector('.room-closed').addEventListener('click',()=>{
-                display_notifycation();
+                display_notifycation('success','Khóa phòng thành công ');
             })
             room_permission.querySelector('.room-open').addEventListener('click',()=>{
-                alert("Mở khóa phòng thành công");
+                display_notifycation('success','Mở Khóa phòng thành công ');
             })
 
 
@@ -667,23 +667,25 @@
     let room_permission_chua_click_date = document.querySelector('.room-permission');
     room_permission_chua_click_date.querySelector('.room-closed').addEventListener('click',()=>{
                 if(!date_clicking){
-                    alert("Vui lòng chọn phòng và chọn 1 ngày để khóa");
+                    // alert("Vui lòng chọn phòng và chọn 1 ngày để khóa");
+                    display_notifycation('error','Vui lòng chọn phòng và chọn 1 ngày để khóa');
                 }
                
             })
 
     room_permission_chua_click_date.querySelector('.room-open').addEventListener('click',()=>{
                 if(!date_clicking){
-                    alert("Vui lòng chọn phòng và chọn 1 ngày để mở phòng");
+                    // alert("Vui lòng chọn phòng và chọn 1 ngày để mở phòng");
+                    display_notifycation('error','Vui lòng chọn phòng và chọn 1 ngày để mở phòng');
                 }
                
             })
 
 
-            function display_notifycation(){
+            function display_notifycation(icon,title){
             Toast.fire({
-            icon: 'success',
-            title: 'Signed in successfully'
+            icon: icon,
+            title: title
             })
             }
 
