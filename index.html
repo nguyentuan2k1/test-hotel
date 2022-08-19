@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8' />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/locales-all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.28/dist/sweetalert2.all.min.js"></script>
+
+</head>
+
+<body>
+    <style>
+        .cover-all {
+            padding: 10px 10px 10px 30px;
+        }
+
+        .cover-room-list {
+            /* border: 1px solid black; */
+        }
+
+        .room {
+            padding: 10px 26px;
+            background-color: #7a7ffb;
+            display: inline-block;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .room-list {
+            border: 1px solid black;
+            padding: 16px;
+            padding-right: 5px;
+            display: flex;
+            gap: 22px 26px;
+            flex-wrap: wrap;
+            overflow-y: auto;
+            height: 200px;
+        }
+
+        .room span {
+            color: black;
+            opacity: 1;
+            font-size: 20px;
+        }
+
+        .active {
+            background-color: #fb917a;
+        }
+
+        .chu-thich-color {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .cover-chu-thich {
+            display: flex;
+            align-items: center;
+        }
+
+        .data-date {}
+
+        .room-permission {
+            display: flex;
+            justify-content: space-evenly;
+            border: 1px solid black;
+            padding: 20px 0;
+        }
+
+        .room-permission-item button {
+            color: black;
+
+        }
+
+        /* CSS header calendar */
+        #calendar .fc-toolbar-chunk {
+            display: flex;
+            gap: 0 16px;
+        }
+
+        #calendar .fc-toolbar-chunk button {
+            background: transparent;
+            border: none;
+        }
+
+
+        #calendar .fc-toolbar-chunk button {
+            background: transparent;
+            border: none;
+        }
+
+        #calendar h2 {
+            font-weight: 300;
+            color: black;
+            opacity: 0.7;
+        }
+
+
+        #calendar .fc-toolbar-chunk span {
+            color: #ccc;
+        }
+
+        .room-permission button {
+            border: 1px solid black;
+            padding: 15px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .room-closed {
+            background: #fae369 !important;
+            opacity: 0.7 !important;
+
+        }
+
+        .room-open {
+            background: #bef8c4 !important;
+            opacity: 0.7 !important;
+
+        }
+
+        .room-orderd {
+            background: #7a7ffb !important;
+            opacity: 0.7 !important;
+
+        }
+
+        .fc-day {
+            cursor: pointer;
+        }
+
+        .update-price-block {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10%;
+        }
+
+        .price-input {
+            padding: 8px;
+            border-radius: 8px;
+            /* width: 30px; */
+            width: 85px;
+            width: 10;
+            padding-left: 20px;
+            border: 1px solid black;
+        }
+
+        .price-now {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .price-change {
+            color: red;
+
+        }
+
+        .cover-update-price-block {
+            padding: 20px 5%;
+            border: 1px solid black;
+        }
+
+        .price-input:focus {
+            outline: none;
+        }
+
+        .cover-data-date {
+            margin: 20px 0;
+        }
+
+        .change-price-btn {
+            background-color: #7a7ffb;
+            color: white;
+            border: none;
+            outline: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .cover-customer-info-block {
+            padding: 20px 5%;
+            border: 1px solid black;
+
+        }
+
+        .cover-customer-data-name-and-date-order {
+            display: flex;
+            justify-content: space-evenly;
+            padding: 0 2%;
+        }
+
+        .cover-customer-data-name-and-date-order div:nth-child(2) input {
+            border-radius: 8px;
+            width: 40px;
+            padding: 5px 10px;
+        }
+
+        .cover-customer-data-name-and-date-order div:nth-child(1) input {
+            border-radius: 8px;
+            padding: 5px 10px;
+        }
+
+
+        .cover-customer-phone-and-order-method {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 0 5%;
+        }
+
+        .cover-customer-phone-and-order-method input {
+            width: 90px;
+            padding: 8px;
+            border-radius: 8px;
+            padding-left: 12px;
+            border: 1px solid black;
+        }
+
+        .cover-customer-phone-and-order-method select {
+            width: 130px;
+            padding: 10px 10px;
+            border-radius: 8px;
+            color: rgba(0, 0, 0, 0.4);
+        }
+
+
+        .cover-customer-number-people {
+            display: flex;
+            justify-content: space-evenly;
+            padding: 0 10%;
+        }
+
+        .cover-customer-number-people div {
+            display: flex;
+            align-items: center;
+
+        }
+
+        .cover-customer-number-people span {
+            margin: 0 10px;
+        }
+
+        .cover-customer-data {
+            display: flex;
+            flex-direction: column;
+            gap: 20px 0;
+        }
+
+        .input-customer-number-people {
+            border-radius: 8px;
+            width: 40px;
+            padding: 5px 10px;
+        }
+
+        .cover-customer-order-hotel-note {
+            padding: 0 20%;
+        }
+
+        .customer-order-hotel-note {
+            width: 100%;
+            border-radius: 20px;
+            height: 50px;
+            padding: 10px 0;
+            padding-left: 12px;
+            /* height: 30px; */
+            /* background-color: red;
+         */
+            border: 1px solid black
+        }
+
+        .cover-customer-order-hotel-button {
+            display: flex;
+            justify-content: space-evenly;
+
+        }
+
+        .cover-customer-order-hotel-button button {
+            padding: 16px;
+            border-radius: 4px;
+            color: white;
+            border: 1px solid black;
+            outline: none;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .cover-customer-order-hotel-button button:first-child {
+            background-color: #f37474;
+        }
+
+        .cover-customer-order-hotel-button button:last-child {
+            background: #7a7ffb;
+        }
+
+        .hotel-heading {
+            display: inline-block;
+            background: #f37474;
+            padding: 6px;
+            border-radius: 0 10px 0 10px;
+            margin: 0;
+            margin-top: 20px;
+        }
+    </style>
+
+
+    <div class="cover-all">
+        <div class="cover-room-list">
+            <span>
+                Danh sách phòng
+            </span>
+            <div class="room-list">
+
+
+
+
+
+            </div>
+        </div>
+
+
+        <div class="cover-room-name-and-calander">
+            <p class="hotel-heading"> Phong 6 </p>
+            <div style="padding:5px 10% ; border: 1px solid #ccc    ;" class="cover-calendar">
+                <div id='calendar'></div>
+                <div
+                    style="display: flex;margin: 0 auto;justify-content: center;align-items: center; gap: 0 40px;margin:20px 0  ;">
+                    <div class="cover-chu-thich">
+                        <div class="chu-thich-color room-closed"> </div>
+                        <span> Khóa phòng </span>
+                    </div>
+
+                    <div class="cover-chu-thich">
+                        <div class="chu-thich-color room-open"> </div>
+                        <span> Phòng trống </span>
+                    </div>
+
+                    <div class="cover-chu-thich">
+                        <div class="chu-thich-color room-orderd"> </div>
+                        <span> Phòng đã đặt </span>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="cover-data-date">
+            <span class="hotel-heading">
+                Ngày 10
+            </span>
+            <div class="data-date">
+                <div class="room-permission">
+                    <div class="room-permission-item">
+                        <button class="room-closed">Khóa phòng</button>
+                    </div>
+
+                    <div class="room-permission-item">
+                        <button class="room-open">Mở phòng</button>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="cover-update-price-block">
+                <p>
+                    Cập nhật giá
+                </p>
+                <div class="update-price-block">
+                    <div>
+                        <span>Giá hiện tại:</span>
+                        <input class="price-input price-now" disabled value="1.500.000">
+                    </div>
+
+                    <div>
+                        <span>Giá Cập nhật:</span>
+                        <input class="price-input price-change" name="price-change" value="2.000.000"
+                            placeholder="Giá cập nhật ">
+                    </div>
+
+                    <div>
+                        <button class="change-price-btn"> Xác nhận </button>
+                    </div>
+                </div>
+                <div style="text-align: center;margin-top: 30px; font-style: italic;">
+                    <p> Giá cập nhật sẽ thay đổi tại thời điểm nhấn xác nhận theo ngày đã định </p>
+                </div>
+            </div>
+
+            <div class="cover-customer-info-block">
+                <p>
+                    Thông tin khách hàng
+                </p>
+                <div class="cover-customer-data">
+                    <div class="cover-customer-data-name-and-date-order">
+                        <div>
+                            <input class="input-customer-name" name="hotel-customer-name"
+                                placeholder="Họ tên khách hàng">
+                        </div>
+
+                        <div>
+                            <span> Số ngày ở : </span>
+                            <input class="input-customer-order-date" name="hotel-order-date" type="number" min="0">
+                        </div>
+                    </div>
+
+                    <div class="cover-customer-phone-and-order-method">
+                        <div>
+                            <span> Sdt: </span>
+                            <input class="input-customer-order-date" name="hotel-order-number-phone"
+                                placeholder="09012345123">
+                        </div>
+
+                        <div>
+                            <span> Hình thức thanh toán : </span>
+                            <select name="hotel-order-method">
+                                <option value="1">Đã thanh toán</option>
+                                <option value="2">Chưa thanh toán</option>
+                                <option value="3">Thanh toán một nửa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="cover-customer-number-people">
+                        <div>
+                            <span> Người lớn:</span>
+                            <input class="input-customer-number-people" name="hotel-order-people-mature" type="number"
+                                min="0">
+                        </div>
+
+                        <div>
+                            <span> Trẻ em :</span>
+                            <input class="input-customer-number-people" name="hotel-order-people-child" type="number"
+                                min="0">
+                        </div>
+                    </div>
+
+                    <div class="cover-customer-order-hotel-note">
+                        <p> Ghi chú:</p>
+                        <textarea class="customer-order-hotel-note" name="customer-order-hotel-note" id="" cols="30"
+                            rows="10"></textarea>
+                    </div>
+
+                    <div class="cover-customer-order-hotel-button">
+                        <button> Huỷ đặt phòng </button>
+                        <button> Xác Nhận Đặt phòng </button>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+
+    <script>
+        let date_change_view  = null;
+        arr = ['fr', 'es', 'uz', 'uk', 'af', 'ar-ma'];
+        let count = 0;
+
+       let calendar = null;
+         let date_clicking = null;
+
+
+         // Cấu hình thông báo 
+                const Toast =   Swal.mixin({
+                        toast: true,
+                    position: 'top-end',
+                showConfirmButton: false,
+                    timer: 3000,
+                timerProgressBar: true,
+            
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+        })
+
+        function create_Calendar(data) {
+
+            var calendarEl = document.getElementById('calendar');
+            
+
+            calendar = new FullCalendar.Calendar(calendarEl, {
+
+
+
+                // visibleRange: {
+                //     start: '2017-05-22',
+                //     end: '2017-05-29'
+                // },
+                headerToolbar: {
+                    left: '',
+                    center: 'prev title next',
+                    right: ''
+                },
+
+                // customButtons: {
+                //     prev: {
+
+                //         click: function (e) {
+                //         //   console.log(calendar.getDate());
+                //         }
+                //     },
+                //     next: {
+
+                //         click: function (e) {
+                //         //   console.log(calendar.getDate());
+
+                //         }
+                //     },
+                // }
+
+
+
+            });
+
+            if(date_change_view){
+                  calendar.changeView('dayGridMonth',date_change_view);
+            }
+           
+         
+
+            calendar.on('dateClick', function (info) {
+              date_clicking =  new Date(info.dateStr).getDate();
+              handle_date_click(date_clicking);
+              
+            });
+            calendar.setOption('locale', 'vi');
+
+
+            if (count % 2 == 0) { // Dùng count để đếm demo render thôi sau thì xóa
+                for (i = 0; i < event_arr.length; i++) {
+                    calendar.addEvent(event_arr[i]);
+                }
+
+            }
+            count++; // Dùng count để đếm demo render thôi sau thì xóa
+         
+            calendar.render();
+
+
+            // if(calendar){
+            //         calendar.destroy();
+            //     }   
+
+
+
+        }
+
+
+
+
+
+        // add event cho các nút ... 
+
+
+
+
+
+        demo_create_room_auto();
+
+
+
+
+
+
+        function demo_create_room_auto() {
+
+            let room_list = document.querySelector('.room-list');
+            for (let i = 0; i < 100; i++) {
+                room_list.innerHTML += '<div room_id=' + i + ' class="room">' + makeid(10) + '</div>';
+            }
+        }
+
+
+        // Tạo tên ngẫu nhiên
+        function makeid(length) {
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for (var i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() *
+                    charactersLength));
+            }
+            return result;
+        }
+
+        function handle_data_create_calendar(datsource) {
+            // nhận cục dữ liệu và xử lý nó 
+
+            return event_arr = [
+                {
+                    className: 'room-orderd',
+                    start: '2022-08-12',
+                    end: '2022-08-12',
+                    display: 'background',
+                },
+                {
+                    className: 'room-open',
+                    start: '2022-08-13',
+                    end: '2022-08-22',
+                    display: 'background',
+                },
+                {
+                    className: 'room-closed',
+                    start: '2022-08-24',
+                    end: '2022-08-28',
+                    display: 'background',
+                },
+            ]
+
+        }
+
+        function handle_date_click(date){
+            document.querySelector('.cover-data-date').querySelector('.hotel-heading').innerHTML = "Ngày "+date;
+            let room_permission = document.querySelector('.room-permission');
+            room_permission.querySelector('.room-closed').addEventListener('click',()=>{
+                display_notifycation();
+            })
+            room_permission.querySelector('.room-open').addEventListener('click',()=>{
+                alert("Mở khóa phòng thành công");
+            })
+
+
+        }
+
+
+
+
+        // Click vào các nút
+        $('body').on('click', 'button.fc-prev-button', function() {
+        //  console.log(calendar.currentData.currentDate);
+           let month_data =  new Date(calendar.currentData.currentDate);
+           date_change_view = moment(month_data).format('YYYY-MM-DD');
+        });
+
+    $('body').on('click', 'button.fc-next-button', function() {
+        let month_data =  new Date(calendar.currentData.currentDate);
+           date_change_view = moment(month_data).format('YYYY-MM-DD');
+    });
+
+
+
+    let room_permission_chua_click_date = document.querySelector('.room-permission');
+    room_permission_chua_click_date.querySelector('.room-closed').addEventListener('click',()=>{
+                if(!date_clicking){
+                    alert("Vui lòng chọn phòng và chọn 1 ngày để khóa");
+                }
+               
+            })
+
+    room_permission_chua_click_date.querySelector('.room-open').addEventListener('click',()=>{
+                if(!date_clicking){
+                    alert("Vui lòng chọn phòng và chọn 1 ngày để mở phòng");
+                }
+               
+            })
+
+
+            function display_notifycation(){
+            Toast.fire({
+            icon: 'success',
+            title: 'Signed in successfully'
+            })
+            }
+
+
+        // Model xử lý calendar ở đây 
+        let room_activiting = null;
+        let hotel_heading = document.querySelector('.hotel-heading');
+        $('.room-list').on('click', (e) => {
+            if (e.target.classList == 'room') {
+                // Xử lý active room
+                if (room_activiting == null) {
+                    // null là chưa click vào thằng nào 
+                    e.target.classList.add('active');
+                }
+                else {
+                    room_activiting.classList.remove('active');
+                    e.target.classList.add('active');
+                }
+                // sau đó xử lý Tạo event và gán room activity
+                room_activiting = e.target;
+                hotel_heading.innerHTML = e.target.innerHTML;
+                create_Calendar(handle_data_create_calendar(1));
+
+
+
+
+            }
+        })
+
+
+
+
+        
+
+
+
+   
+
+
+
+
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
